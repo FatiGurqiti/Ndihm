@@ -11,7 +11,9 @@ import com.example.denko.domain.model.Biometric
 import com.example.denko.ui.screen.main.MainScreen
 import com.example.denko.ui.theme.DenkoTheme
 import com.example.denko.util.BiometricHandler
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
