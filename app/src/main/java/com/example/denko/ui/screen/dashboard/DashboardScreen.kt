@@ -1,6 +1,5 @@
 package com.example.denko.ui.screen.info
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.example.denko.ui.composable.dialog.DialogWithButtons
 import com.example.denko.ui.navigation.NavigationItem
 
 @Composable
 fun DashboardScreen(navController: NavController) {
-    DashboardContent(){
+    DashboardContent {
         navController.navigate(
             NavigationItem.Info.route, NavOptions.Builder()
                 .setLaunchSingleTop(true)
@@ -41,6 +41,14 @@ fun DashboardScreen(navController: NavController) {
 
 @Composable
 fun DashboardContent(onEditClicked: () -> Unit) {
+    DialogWithButtons(
+        onDismissRequest = { /*TODO*/ },
+        onConfirmation = { /*TODO*/ },
+        dialogTitle = "",
+        dialogText = "",
+        icon = Icons.Rounded.Edit
+    )
+
     Column {
         Row(
             modifier = Modifier
@@ -49,7 +57,7 @@ fun DashboardContent(onEditClicked: () -> Unit) {
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End
         ) {
-            IconButton(onClick = onEditClicked ) {
+            IconButton(onClick = onEditClicked) {
                 Icon(imageVector = Icons.Rounded.Edit, contentDescription = "")
             }
         }
