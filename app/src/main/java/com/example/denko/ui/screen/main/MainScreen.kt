@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.denko.domain.model.Biometric
@@ -23,6 +25,8 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val lifecycle = LocalLifecycleOwner.current
     val navController = rememberNavController()
     val context = LocalContext.current
+    val state: MainState by viewModel.state.collectAsStateWithLifecycle()
+
     val setEvent = viewModel::setEvent
 
     DisposableEffect(lifecycle) {
@@ -50,21 +54,20 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
         }
     }
 
-    MainContent(navController = navController)
+    MainContent(navController = navController, state = state)
 }
 
 @Composable
 fun MainContent(
-//    state: MainState,
-//    sendEvent: (MainEvent) -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    state: MainState
 ) {
     DenkoTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Navigation(navController)
+            Navigation(navController, state.isUserSet)
         }
     }
 }

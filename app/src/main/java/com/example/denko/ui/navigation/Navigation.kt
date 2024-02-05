@@ -8,8 +8,11 @@ import com.example.denko.ui.screen.info.DashboardScreen
 import com.example.denko.ui.screen.info.InfoScreen
 
 @Composable
-fun Navigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = NavigationItem.Info.route) {
+fun Navigation(navController: NavHostController, isUserSet: Boolean) {
+    val startDestination =
+        if (isUserSet) NavigationItem.Dashboard.route else NavigationItem.Info.route
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(NavigationItem.Dashboard.route) {
             DashboardScreen(navController = navController)
         }
