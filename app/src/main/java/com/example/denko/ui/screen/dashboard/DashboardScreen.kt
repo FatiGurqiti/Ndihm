@@ -41,13 +41,13 @@ fun DashboardScreen(navController: NavController) {
 
 @Composable
 fun DashboardContent(onEditClicked: () -> Unit) {
-    DialogWithButtons(
-        onDismissRequest = { /*TODO*/ },
-        onConfirmation = { /*TODO*/ },
-        dialogTitle = "",
-        dialogText = "",
-        icon = Icons.Rounded.Edit
-    )
+//    DialogWithButtons(
+//        onDismissRequest = { /*TODO*/ },
+//        onConfirmation = { /*TODO*/ },
+//        dialogTitle = "",
+//        dialogText = "",
+//        icon = Icons.Rounded.Edit
+//    )
 
     Column {
         Row(
