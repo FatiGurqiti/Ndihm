@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ndihmden</string>
+    <string name="biometric_title">Biometrijska potvrda</string>
+    <string name="biometric_subtext">Ova radnja se ne može poništiti nakon skeniranja i lažni pozivi će rezultirati kaznom!</string>
+    <string name="cancel">Otkaži</string>
+    <string name="information">Informacije</string>
+    <string name="name">Ime</string>
+    <string name="surname">Prezime</string>
+    <string name="phone_number">Telefonski broj</string>
+    <string name="finish">Kraj</string>
+    <string name="conformation">Konformacija</string>
+    <string name="confirm">Potvrdi</string>
+    <string name="conformation_text">Ova radnja se ne može poništiti. Lažni pozivi će rezultirati kaznom!\nJeste li sigurni da želite nastaviti?</string>
+    <string name="help">Upomoć!</string>
+</resources>

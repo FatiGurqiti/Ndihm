@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Denko</string>
+    <string name="app_name">Ndihmden</string>
+    <string name="biometric_title">Biometric Confirmation</string>
+    <string name="biometric_subtext">This action cannot be reverted after the scan and false calls will result with penalty!</string>
+    <string name="cancel">Cancel</string>
+    <string name="information">Information</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="finish">Finish</string>
+    <string name="conformation">Conformation</string>
+    <string name="confirm">Confirm</string>
+    <string name="conformation_text">The action cannot be reverted. False calls will result with penalty!\nAre you sure you want to continue?</string>
+    <string name="help">Help!</string>
 </resources>

@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.denko.R
 import com.example.denko.domain.model.Biometric
 import com.example.denko.ui.navigation.Navigation
 import com.example.denko.ui.theme.DenkoTheme
@@ -32,14 +33,16 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_CREATE -> {
-                    val biometric = Biometric(
-                        activity = context as FragmentActivity,
-                        title = "Biometric Confirmation",
-                        subtext = "The action cannot be reverted after the scan and false calls will result with penalty!",
-                        negativeText = "Cancel"
-                    )
+                    context.apply {
+                        val biometric = Biometric(
+                            activity = this as FragmentActivity,
+                            title = getString(R.string.biometric_title),
+                            subtext = getString(R.string.biometric_subtext),
+                            negativeText = getString(R.string.cancel)
+                        )
 
-                    setEvent(MainEvent.SetupBiometrics(biometric))
+                        setEvent(MainEvent.SetupBiometrics(biometric))
+                    }
                 }
 
                 else -> Unit

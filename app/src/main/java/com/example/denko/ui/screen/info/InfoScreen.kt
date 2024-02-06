@@ -28,10 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.example.denko.R
 import com.example.denko.domain.model.User
 import com.example.denko.ui.navigation.NavigationItem
 
@@ -100,7 +102,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Top
                 ) {
-                    Text(text = "Information")
+                    Text(text = stringResource(id = R.string.information))
                 }
 
                 OutlinedTextField(
@@ -108,7 +110,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     value = name,
                     onValueChange = { name = it },
                     label = {
-                        Text(text = "Name")
+                        Text(text = stringResource(id = R.string.name))
                     },
                     shape = RoundedCornerShape(16.dp)
                 )
@@ -118,7 +120,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     value = surname,
                     onValueChange = { surname = it },
                     label = {
-                        Text(text = "Surname")
+                        Text(text = stringResource(id = R.string.surname))
                     },
                     shape = RoundedCornerShape(16.dp)
                 )
@@ -128,7 +130,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     value = phone,
                     onValueChange = { phone = it },
                     label = {
-                        Text(text = "Phone Number")
+                        Text(text = stringResource(id = R.string.phone_number))
                     },
                     shape = RoundedCornerShape(16.dp)
                 )
@@ -144,7 +146,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     onFinish(User("", "", ""))
                 }
             ) {
-                Text(text = "Finish")
+                Text(text = stringResource(id = R.string.finish))
             }
         }
     }

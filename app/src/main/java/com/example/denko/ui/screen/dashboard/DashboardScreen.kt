@@ -21,12 +21,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.example.denko.R
 import com.example.denko.ui.composable.dialog.DialogWithButtons
 import com.example.denko.ui.navigation.NavigationItem
 import kotlin.reflect.KFunction1
@@ -42,17 +44,17 @@ fun DashboardScreen(navController: NavController, viewModel: DashboardViewModel 
 
 @Composable
 fun DashboardContent(
-    state: DashboardState,
-    setEvent: KFunction1<DashboardEvent, Unit>,
-    navController: NavController
+    state: DashboardState, setEvent: KFunction1<DashboardEvent, Unit>, navController: NavController
 ) {
 
     if (state.confirmDialogVisibility) {
         DialogWithButtons(
             onDismissRequest = { setEvent(DashboardEvent.CloseConfirmDialog) },
             onConfirmation = { setEvent(DashboardEvent.HelpAction) },
-            dialogTitle = "Confirmation",
-            dialogText = "Are you sure want to start the help action?"
+            dialogTitle = stringResource(id = R.string.conformation),
+            dialogText = stringResource(id = R.string.conformation_text),
+            positiveText = stringResource(id = R.string.confirm),
+            negativeText = stringResource(id = R.string.cancel)
         )
     }
 
@@ -66,10 +68,9 @@ fun DashboardContent(
         ) {
             IconButton(onClick = {
                 navController.navigate(
-                    NavigationItem.Info.route, NavOptions.Builder()
-                        .setLaunchSingleTop(true)
-                        .setPopUpTo(NavigationItem.Dashboard.route, inclusive = true)
-                        .build()
+                    NavigationItem.Info.route,
+                    NavOptions.Builder().setLaunchSingleTop(true)
+                        .setPopUpTo(NavigationItem.Dashboard.route, inclusive = true).build()
                 )
             }) {
                 Icon(imageVector = Icons.Rounded.Edit, contentDescription = "")
@@ -79,8 +80,7 @@ fun DashboardContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .zIndex(2f),
-            contentAlignment = Alignment.Center
+                .zIndex(2f), contentAlignment = Alignment.Center
         ) {
 
             OutlinedButton(
@@ -89,7 +89,10 @@ fun DashboardContent(
                     .size(300.dp)
                     .clip(CircleShape)
             ) {
-                Text(text = "Help!", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = stringResource(id = R.string.help),
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         }
     }

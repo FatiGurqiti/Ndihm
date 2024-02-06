@@ -11,6 +11,8 @@ fun DialogWithButtons(
     onConfirmation: () -> Unit,
     dialogTitle: String,
     dialogText: String,
+    positiveText: String,
+    negativeText: String
 ) {
     AlertDialog(
         title = { Text(text = dialogTitle) },
@@ -20,14 +22,14 @@ fun DialogWithButtons(
             TextButton(
                 onClick = { onConfirmation() }
             ) {
-                Text("Confirm")
+                Text(text = positiveText)
             }
         },
         dismissButton = {
             TextButton(
                 onClick = { onDismissRequest() }
             ) {
-                Text("Dismiss")
+                Text(text = negativeText)
             }
         }
     )

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ndihmden</string>
+    <string name="biometric_title">Biyometrik Onay</string>
+    <string name="biometric_subtext">Bu işlem taramadan sonra geri alınamaz ve yanlış aramalar cezayla sonuçlanacaktır!</string>
+    <string name="cancel">İptal</string>
+    <string name="information">Bilgi</string>
+    <string name="name">Ad</string>
+    <string name="surname">Soyad</string>
+    <string name="phone_number">Telefon numarası</string>
+    <string name="finish">Bitir</string>
+    <string name="conformation">Onay</string>
+    <string name="confirm">Onayla</string>
+    <string name="conformation_text">Bu işlem geri alınamaz. Sahte aramalar cezayla sonuçlanacaktır!\nDevam etmek istediğinizden emin misiniz?</string>
+    <string name="help">Yardım!</string>
+</resources>
