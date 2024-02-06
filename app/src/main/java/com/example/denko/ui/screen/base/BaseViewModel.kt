@@ -18,6 +18,9 @@ abstract class BaseViewModel<State : ViewState, Event : ViewEvent, Effect : View
 
     abstract val initialState: State
 
+    val effectTag: String
+        get() = "${this::class.simpleName}Effect"
+
     private var eventJob: Job? = null
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
@@ -46,7 +49,7 @@ abstract class BaseViewModel<State : ViewState, Event : ViewEvent, Effect : View
     }
 
     fun setEvent(event: Event) {
-        if (eventJob?.isActive == true) {
+        if (eventJob?.isActive != true) {
             eventJob = viewModelScope.launch {
                 _event.emit(event)
             }

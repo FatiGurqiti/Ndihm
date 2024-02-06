@@ -26,7 +26,6 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val context = LocalContext.current
     val state: MainState by viewModel.state.collectAsStateWithLifecycle()
-
     val setEvent = viewModel::setEvent
 
     DisposableEffect(lifecycle) {
@@ -35,9 +34,9 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                 Lifecycle.Event.ON_CREATE -> {
                     val biometric = Biometric(
                         activity = context as FragmentActivity,
-                        title = "title",
-                        subtext = "subtext",
-                        negativeText = "negativeText"
+                        title = "Biometric Confirmation",
+                        subtext = "The action cannot be reverted after the scan and false calls will result with penalty!",
+                        negativeText = "Cancel"
                     )
 
                     setEvent(MainEvent.SetupBiometrics(biometric))

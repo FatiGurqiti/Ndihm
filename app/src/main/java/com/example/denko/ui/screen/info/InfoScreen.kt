@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,26 +29,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.example.denko.domain.model.User
 import com.example.denko.ui.navigation.NavigationItem
 
 @Composable
-fun InfoScreen(navController: NavController) {
+fun InfoScreen(navController: NavController, viewModel: InfoViewModel = hiltViewModel()) {
+    val setEvent = viewModel::setEvent
 
-    InfoContent() {
-        navController.navigate(
-            NavigationItem.Dashboard.route, NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setPopUpTo(NavigationItem.Info.route, inclusive = true)
-                .build()
-        )
+    LaunchedEffect(viewModel.effectTag) {
+        viewModel.event.collect {
+            when (it) {
+                is InfoEvent.SetupUser -> {
+                    navController.navigate(
+                        NavigationItem.Dashboard.route, NavOptions.Builder()
+                            .setLaunchSingleTop(true)
+                            .setPopUpTo(NavigationItem.Info.route, inclusive = true)
+                            .build()
+                    )
+                }
+            }
+        }
+    }
+
+    InfoContent {
+        setEvent(InfoEvent.SetupUser(it))
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InfoContent(onFinish: () -> Unit) {
+fun InfoContent(onFinish: (user: User) -> Unit) {
     val scrollState = rememberScrollState()
 
     var name by remember { mutableStateOf("") }
@@ -126,7 +140,10 @@ fun InfoContent(onFinish: () -> Unit) {
                 .fillMaxWidth()
                 .height(60.dp),
                 shape = RectangleShape,
-                onClick = { onFinish() }) {
+                onClick = {
+                    onFinish(User("", "", ""))
+                }
+            ) {
                 Text(text = "Finish")
             }
         }
