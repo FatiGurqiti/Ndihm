@@ -1,14 +1,13 @@
 package com.example.denko.ui.screen.info
 
-import com.example.denko.common.Constants.USER_STATE
-import com.example.denko.data.local.NdihdenPreferences
+import com.example.denko.domain.useCase.userUseCase.SetUserUseCase
 import com.example.denko.ui.screen.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class InfoViewModel @Inject constructor(
-    private val ndihdenPreferences: NdihdenPreferences
+    private val setUserUseCase: SetUserUseCase,
 ) : BaseViewModel<InfoState, InfoEvent, InfoEffect>() {
     override val initialState: InfoState
         get() = InfoState
@@ -16,7 +15,7 @@ class InfoViewModel @Inject constructor(
     override fun onEvent(event: InfoEvent) {
         when (event) {
             is InfoEvent.SetupUser -> {
-                ndihdenPreferences.setBoolean(USER_STATE, true)
+                setUserUseCase(event.user)
                 InfoEffect.RedirectToDashboard.setEffect()
             }
         }

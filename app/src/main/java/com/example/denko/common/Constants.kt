@@ -4,5 +4,5 @@ object Constants {
 
     // SharedPreferences
     const val SHARED_PREFERENCES = "nihdenPreferences"
-    const val USER_STATE = "userState"
+    const val PREFERENCES_USER = "userState"
 }

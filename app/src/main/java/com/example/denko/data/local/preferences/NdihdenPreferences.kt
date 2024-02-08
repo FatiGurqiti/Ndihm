@@ -1,4 +1,4 @@
-package com.example.denko.data.local
+package com.example.denko.data.local.preferences
 
 import android.content.SharedPreferences
 
@@ -11,9 +11,9 @@ class NdihdenPreferences(private val sharedPreferences: SharedPreferences) {
             .commit()
     }
 
-    fun setBoolean(key: String, value: Boolean) {
-        commit { putBoolean(key, value) }
+    fun setString(key: String, value: String) {
+        commit { putString(key, value) }
     }
 
-    fun getBoolean(key: String, default: Boolean) = sharedPreferences.getBoolean(key, default)
+    fun getString(key: String, default: String?) = sharedPreferences.getString(key, default)
 }
