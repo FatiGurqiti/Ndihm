@@ -35,7 +35,6 @@ import kotlin.reflect.KFunction1
 
 @Composable
 fun DashboardScreen(navController: NavController, viewModel: DashboardViewModel = hiltViewModel()) {
-
     val state: DashboardState by viewModel.state.collectAsStateWithLifecycle()
     val setEvent = viewModel::setEvent
 
@@ -46,7 +45,6 @@ fun DashboardScreen(navController: NavController, viewModel: DashboardViewModel 
 fun DashboardContent(
     state: DashboardState, setEvent: KFunction1<DashboardEvent, Unit>, navController: NavController
 ) {
-
     if (state.confirmDialogVisibility) {
         DialogWithButtons(
             onDismissRequest = { setEvent(DashboardEvent.CloseConfirmDialog) },
@@ -66,7 +64,9 @@ fun DashboardContent(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End
         ) {
-            IconButton(onClick = {
+            IconButton(
+                enabled = !state.helpActionActive,
+                onClick = {
                 navController.navigate(
                     NavigationItem.Info.route,
                     NavOptions.Builder().setLaunchSingleTop(true)
@@ -84,6 +84,7 @@ fun DashboardContent(
         ) {
 
             OutlinedButton(
+                enabled = !state.helpActionActive,
                 onClick = { setEvent(DashboardEvent.OnHelpButtonClick) },
                 modifier = Modifier
                     .size(300.dp)

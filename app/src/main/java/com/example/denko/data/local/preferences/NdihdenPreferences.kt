@@ -16,4 +16,10 @@ class NdihdenPreferences(private val sharedPreferences: SharedPreferences) {
     }
 
     fun getString(key: String, default: String?) = sharedPreferences.getString(key, default)
+
+    fun setBoolean(key: String, value: Boolean) {
+        commit { putBoolean(key, value) }
+    }
+
+    fun getBoolean(key: String, default: Boolean) = sharedPreferences.getBoolean(key, default)
 }

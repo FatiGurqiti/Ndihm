@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.denko.common.Constants
 import com.example.denko.data.local.preferences.NdihdenPreferences
+import com.example.denko.data.local.repository.HelpActionRepositoryImpl
 import com.example.denko.data.local.repository.UserRepositoryImpl
+import com.example.denko.domain.repository.HelpActionRepository
 import com.example.denko.domain.repository.UserRepository
 import com.google.gson.Gson
 import dagger.Module
@@ -31,4 +33,9 @@ object DataModule {
     @Provides
     fun providesUserRepository(ndihdenPreferences: NdihdenPreferences, gson: Gson): UserRepository =
         UserRepositoryImpl(ndihdenPreferences, gson)
+
+    @Singleton
+    @Provides
+    fun providesHelpActionRepository(ndihdenPreferences: NdihdenPreferences): HelpActionRepository =
+        HelpActionRepositoryImpl(ndihdenPreferences)
 }

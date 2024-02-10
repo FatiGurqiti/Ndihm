@@ -1,5 +1,6 @@
 package com.example.denko.ui.screen.dashboard
 
+import com.example.denko.domain.useCase.helpActionUseCase.HelpActionUseCases
 import com.example.denko.ui.screen.base.BaseViewModel
 import com.example.denko.util.BiometricHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,7 +8,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val biometricHandler: BiometricHandler
+    private val biometricHandler: BiometricHandler,
+    private val helpActionUseCases: HelpActionUseCases
 ) :
     BaseViewModel<DashboardState, DashboardEvent, DashboardEffect>() {
     override val initialState: DashboardState
@@ -19,6 +21,14 @@ class DashboardViewModel @Inject constructor(
             DashboardEvent.CloseConfirmDialog -> setState { copy(confirmDialogVisibility = false) }
             DashboardEvent.HelpAction -> helpAction()
         }
+    }
+
+    init {
+        setupInitialStates()
+    }
+
+    private fun setupInitialStates() {
+        setState { copy(helpActionActive = helpActionUseCases.getHelpActionUseCase()) }
     }
 
     private fun helpButtonClick() {
@@ -34,7 +44,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun helpAction() {
-        println("help started")
-        setState { copy(confirmDialogVisibility = false)}
+        setState { copy(confirmDialogVisibility = false, helpActionActive = true) }
+        helpActionUseCases.setHelpActionUseCase(true)
     }
 }
