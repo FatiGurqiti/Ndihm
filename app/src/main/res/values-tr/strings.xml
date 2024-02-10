@@ -13,4 +13,5 @@
     <string name="confirm">Onayla</string>
     <string name="conformation_text">Bu işlem geri alınamaz. Sahte aramalar cezayla sonuçlanacaktır!\nDevam etmek istediğinizden emin misiniz?</string>
     <string name="help">Yardım!</string>
+    <string name="enable_permissions">İzinleri aktifleştirmek için buraya tıklayın</string>
 </resources>

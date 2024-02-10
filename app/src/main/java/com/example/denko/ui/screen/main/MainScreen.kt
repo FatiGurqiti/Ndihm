@@ -1,5 +1,8 @@
 package com.example.denko.ui.screen.main
 
+import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,8 +21,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.denko.R
 import com.example.denko.domain.model.Biometric
+import com.example.denko.domain.model.Permission
 import com.example.denko.ui.navigation.Navigation
+import com.example.denko.ui.screen.main.composable.PermissionScreen
 import com.example.denko.ui.theme.DenkoTheme
+import kotlin.reflect.KFunction1
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
@@ -28,6 +34,13 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val state: MainState by viewModel.state.collectAsStateWithLifecycle()
     val setEvent = viewModel::setEvent
+
+    val launcherMultiplePermissions = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionsMap ->
+        val areGranted = permissionsMap.values.reduce { acc, next -> acc && next }
+        setEvent(MainEvent.PermissionsStatusChanged(areGranted))
+    }
 
     DisposableEffect(lifecycle) {
         val observer = LifecycleEventObserver { _, event ->
@@ -45,6 +58,11 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     }
                 }
 
+                Lifecycle.Event.ON_RESUME -> {
+                    val permission = Permission(context, launcherMultiplePermissions)
+                    setEvent(MainEvent.CheckPermissionEnabled(permission))
+                }
+
                 else -> Unit
             }
         }
@@ -56,20 +74,28 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
         }
     }
 
-    MainContent(navController = navController, state = state)
+    MainContent(
+        navController = navController,
+        state = state,
+        setEvent = setEvent,
+        context = context
+    )
 }
 
 @Composable
 fun MainContent(
     navController: NavHostController,
-    state: MainState
+    state: MainState,
+    setEvent: KFunction1<MainEvent, Unit>,
+    context: Context
 ) {
     DenkoTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Navigation(navController, state.isUserSet)
+            if (state.permissionsEnabled) Navigation(navController, state.isUserSet)
+            else PermissionScreen { setEvent(MainEvent.RedirectToPermissions(context)) }
         }
     }
 }
