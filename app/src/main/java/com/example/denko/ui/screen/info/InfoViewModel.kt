@@ -9,14 +9,19 @@ import javax.inject.Inject
 class InfoViewModel @Inject constructor(
     private val setUserUseCase: SetUserUseCase,
 ) : BaseViewModel<InfoState, InfoEvent, InfoEffect>() {
+
     override val initialState: InfoState
-        get() = InfoState
+        get() = InfoState()
 
     override fun onEvent(event: InfoEvent) {
         when (event) {
             is InfoEvent.SetupUser -> {
-                setUserUseCase(event.user)
-                InfoEffect.RedirectToDashboard.setEffect()
+                if (event.user.number.isEmpty() || event.user.number.length < 8) {
+                    setState { copy(phoneFieldError = true) }
+                } else {
+                    setUserUseCase(event.user)
+                    InfoEffect.RedirectToDashboard.setEffect()
+                }
             }
         }
     }

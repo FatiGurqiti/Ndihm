@@ -40,6 +40,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.example.denko.R
@@ -48,12 +49,13 @@ import com.example.denko.ui.navigation.NavigationItem
 
 @Composable
 fun InfoScreen(navController: NavController, viewModel: InfoViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val setEvent = viewModel::setEvent
 
     LaunchedEffect(viewModel.effectTag) {
-        viewModel.event.collect {
+        viewModel.effect.collect {
             when (it) {
-                is InfoEvent.SetupUser -> {
+                is InfoEffect.RedirectToDashboard -> {
                     navController.navigate(
                         NavigationItem.Dashboard.route,
                         NavOptions.Builder().setLaunchSingleTop(true)
@@ -64,14 +66,18 @@ fun InfoScreen(navController: NavController, viewModel: InfoViewModel = hiltView
         }
     }
 
-    InfoContent {
-        setEvent(InfoEvent.SetupUser(it))
-    }
+    InfoContent(
+        phoneFieldError = state.phoneFieldError,
+        onFinish = { setEvent(InfoEvent.SetupUser(it)) }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InfoContent(onFinish: (user: User) -> Unit) {
+fun InfoContent(
+    phoneFieldError: Boolean,
+    onFinish: (user: User) -> Unit
+) {
     val scrollState = rememberScrollState()
 
     var name by remember { mutableStateOf("") }
@@ -118,6 +124,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     value = name,
                     onValueChange = { name = it },
+                    maxLines = 1,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Next
@@ -132,6 +139,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     value = surname,
                     onValueChange = { surname = it },
+                    maxLines = 1,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Next
@@ -147,7 +155,8 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                         .fillMaxWidth()
                         .onFocusChanged { numberFiledFocus = it.isFocused },
                     value = phone,
-                    onValueChange = { phone = it },
+                    onValueChange = { if (it.length <= 8) phone = it },
+                    maxLines = 1,
                     label = {
                         Text(text = stringResource(id = R.string.phone_number))
                     },
@@ -157,13 +166,16 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
                         imeAction = ImeAction.Done
                     ),
                     singleLine = true,
+                    isError = phoneFieldError,
                     leadingIcon = {
                         Row(modifier = Modifier.padding(start = 14.dp)) {
                             if (numberFiledFocus) {
                                 Text(text = "+383")
                             } else {
                                 Image(
-                                    modifier = Modifier.size(40.dp).clip(CircleShape),
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape),
                                     painter = painterResource(id = R.drawable.kosovo),
                                     contentDescription = "Kosovo"
                                 )
@@ -181,7 +193,7 @@ fun InfoContent(onFinish: (user: User) -> Unit) {
             .height(60.dp),
             shape = RectangleShape,
             onClick = {
-                onFinish(User("", "", ""))
+                onFinish(User(name, surname, phone))
             }) {
             Text(text = stringResource(id = R.string.finish))
         }
