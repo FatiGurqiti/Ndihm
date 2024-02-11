@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.denko.R
-import com.example.denko.common.Constants.LOCATION_UPDATE_ACCURACY
 import com.example.denko.domain.client.LocationClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
@@ -18,14 +17,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-//TODO("Replace strings")
-
 class LocationService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient
 
     override fun onBind(intent: Intent?): IBinder? {
-
         return null
     }
 
@@ -46,8 +42,8 @@ class LocationService : Service() {
     }
 
     private fun start() {
-        val notification = NotificationCompat.Builder(this, "location")
-            .setContentTitle("Tracking location")
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(getString(R.string.location_notification_title))
             .setContentText("Location: null")
             .setSmallIcon(R.drawable.ic_launcher_background) //TODO("Change with logo")
             .setOngoing(true)
@@ -60,7 +56,7 @@ class LocationService : Service() {
             .onEach { location ->
                 val updatedNotification =
                     notification.setContentText(
-                        "Location: ${location.latitude}, ${location.longitude}"
+                        "${location.latitude}, ${location.longitude}"
                     )
                 notificationManager.notify(1, updatedNotification.build())
             }
@@ -80,8 +76,10 @@ class LocationService : Service() {
     }
 
     companion object {
+        const val LOCATION_UPDATE_ACCURACY = 10000L
         const val ACTION_START = "actionStart"
         const val ACTION_STOP = "actionStop"
+        const val CHANNEL_ID = "location"
+        const val CHANNEL_NAME = "Location"
     }
-
 }

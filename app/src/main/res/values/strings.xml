@@ -13,5 +13,6 @@
     <string name="conformation_text">The action cannot be reverted. False calls will result with penalty!\nAre you sure you want to continue?</string>
     <string name="help">Help!</string>
     <string name="enable_permissions">Click here to enable the permissions</string>
-    <string name="stop_call"> Stop Call</string>
+    <string name="stop_call">Stop Call</string>
+    <string name="location_notification_title">Actively tracking location</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="help">Upomoć!</string>
     <string name="enable_permissions">Kliknite ovdje da omogućite dozvole</string>
     <string name="stop_call">Zaustavi poziv</string>
+    <string name="location_notification_title">Aktivno praćenje lokacije</string>
 </resources>
