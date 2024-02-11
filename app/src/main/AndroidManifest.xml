@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,6 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Denko"
         tools:targetApi="31">
+
+        <service
+            android:name=".service.location.LocationService"
+            android:foregroundServiceType="location" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

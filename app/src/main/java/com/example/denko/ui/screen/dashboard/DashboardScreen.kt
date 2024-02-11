@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -45,10 +46,12 @@ fun DashboardScreen(navController: NavController, viewModel: DashboardViewModel 
 fun DashboardContent(
     state: DashboardState, setEvent: KFunction1<DashboardEvent, Unit>, navController: NavController
 ) {
+    val context = LocalContext.current
+
     if (state.confirmDialogVisibility) {
         DialogWithButtons(
             onDismissRequest = { setEvent(DashboardEvent.CloseConfirmDialog) },
-            onConfirmation = { setEvent(DashboardEvent.HelpAction) },
+            onConfirmation = { setEvent(DashboardEvent.HelpAction(context)) },
             dialogTitle = stringResource(id = R.string.conformation),
             dialogText = stringResource(id = R.string.conformation_text),
             positiveText = stringResource(id = R.string.confirm),
@@ -67,12 +70,12 @@ fun DashboardContent(
             IconButton(
                 enabled = !state.helpActionActive,
                 onClick = {
-                navController.navigate(
-                    NavigationItem.Info.route,
-                    NavOptions.Builder().setLaunchSingleTop(true)
-                        .setPopUpTo(NavigationItem.Dashboard.route, inclusive = true).build()
-                )
-            }) {
+                    navController.navigate(
+                        NavigationItem.Info.route,
+                        NavOptions.Builder().setLaunchSingleTop(true)
+                            .setPopUpTo(NavigationItem.Dashboard.route, inclusive = true).build()
+                    )
+                }) {
                 Icon(imageVector = Icons.Rounded.Edit, contentDescription = "")
             }
         }
@@ -85,7 +88,7 @@ fun DashboardContent(
 
             OutlinedButton(
                 enabled = !state.helpActionActive,
-                onClick = { setEvent(DashboardEvent.OnHelpButtonClick) },
+                onClick = { setEvent(DashboardEvent.OnHelpButtonClick(context)) },
                 modifier = Modifier
                     .size(300.dp)
                     .clip(CircleShape)

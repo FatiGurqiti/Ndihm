@@ -1,5 +1,6 @@
 package com.example.denko.ui.screen.dashboard
 
+import android.content.Context
 import com.example.denko.ui.screen.base.ViewEffect
 import com.example.denko.ui.screen.base.ViewEvent
 import com.example.denko.ui.screen.base.ViewState
@@ -10,9 +11,9 @@ data class DashboardState(
 ) : ViewState()
 
 sealed class DashboardEvent : ViewEvent() {
-    data object OnHelpButtonClick : DashboardEvent()
+    data class OnHelpButtonClick(val context: Context) : DashboardEvent()
     data object CloseConfirmDialog : DashboardEvent()
-    data object HelpAction : DashboardEvent()
+    data class HelpAction(val context: Context) : DashboardEvent()
 }
 
 sealed class DashboardEffect : ViewEffect()
