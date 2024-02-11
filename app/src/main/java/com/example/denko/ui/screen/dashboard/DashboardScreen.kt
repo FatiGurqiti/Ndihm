@@ -52,7 +52,7 @@ fun DashboardContent(
         DialogWithButtons(
             onDismissRequest = { setEvent(DashboardEvent.CloseConfirmDialog) },
             onConfirmation = { setEvent(DashboardEvent.HelpAction(context)) },
-            dialogTitle = stringResource(id = R.string.conformation),
+            dialogTitle = stringResource(id = R.string.confirmation),
             dialogText = stringResource(id = R.string.conformation_text),
             positiveText = stringResource(id = R.string.confirm),
             negativeText = stringResource(id = R.string.cancel)
@@ -87,14 +87,16 @@ fun DashboardContent(
         ) {
 
             OutlinedButton(
-                enabled = !state.helpActionActive,
                 onClick = { setEvent(DashboardEvent.OnHelpButtonClick(context)) },
                 modifier = Modifier
                     .size(300.dp)
                     .clip(CircleShape)
             ) {
+                val textId = if (state.helpActionActive) R.string.stop_call
+                else R.string.help
+
                 Text(
-                    text = stringResource(id = R.string.help),
+                    text = stringResource(id = textId),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

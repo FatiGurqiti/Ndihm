@@ -31,13 +31,26 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun setupInitialStates() {
-//        setState { copy(helpActionActive = helpActionUseCases.getHelpActionUseCase()) }
-        setState { copy(helpActionActive = false) }
+        setState { copy(helpActionActive = helpActionUseCases.getHelpActionUseCase()) }
     }
 
     private fun Context.helpButtonClick() {
+        if (!state.value.helpActionActive) startHelpAction()
+        else endHelpAction()
+    }
+
+    private fun Context.startHelpAction() {
         if (biometricHandler.isBiometricAvailable()) launchBiometrics()
         else setState { copy(confirmDialogVisibility = true) }
+    }
+
+    private fun Context.endHelpAction() {
+        setState { copy(helpActionActive = false) }
+        helpActionUseCases.setHelpActionUseCase(false)
+        Intent(this, LocationService::class.java).apply {
+            action = LocationService.ACTION_STOP
+            startService(this)
+        }
     }
 
     private fun Context.launchBiometrics() {
@@ -48,8 +61,13 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun Context.helpAction() {
-//        setState { copy(confirmDialogVisibility = false, helpActionActive = false) }
-//        helpActionUseCases.setHelpActionUseCase(true)
+        setState {
+            copy(
+                confirmDialogVisibility = false,
+                helpActionActive = true,
+            )
+        }
+        helpActionUseCases.setHelpActionUseCase(true)
         Intent(this, LocationService::class.java).apply {
             action = LocationService.ACTION_START
             startService(this)

@@ -9,9 +9,10 @@
     <string name="surname">Mbiemri</string>
     <string name="phone_number">Numëri i telefonit</string>
     <string name="finish">Përfundoni</string>
-    <string name="conformation">Konformacioni</string>
+    <string name="confirmation">Konfirmimi</string>
     <string name="confirm">Konfirmo</string>
     <string name="conformation_text">Veprimi nuk mund të rikthehet. Thirrjet e rreme do të rezultojnë me dënim!\nA jeni sigurt që dëshironi me vazhdu?</string>
     <string name="help">Më ndihmo!</string>
     <string name="enable_permissions">Kliko këtu për të aktivizuar lejet</string>
+    <string name="stop_call">Zaustavi poziv</string>
 </resources>
