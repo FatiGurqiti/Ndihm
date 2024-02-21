@@ -2,6 +2,10 @@ package com.example.denko.ui.screen.dashboard
 
 import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.provider.Settings
+import com.example.denko.common.hasLocationPermission
 import com.example.denko.domain.useCase.helpActionUseCase.HelpActionUseCases
 import com.example.denko.service.location.LocationService
 import com.example.denko.ui.screen.base.BaseViewModel
@@ -61,6 +65,8 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun Context.helpAction() {
+        if (!checkInternetAndLocationStatus()) return
+
         setState {
             copy(
                 confirmDialogVisibility = false,
@@ -72,5 +78,27 @@ class DashboardViewModel @Inject constructor(
             action = LocationService.ACTION_START
             startService(this)
         }
+    }
+
+    private fun Context.checkInternetAndLocationStatus(): Boolean {
+        val locationManager =
+            applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val connectivityManager =
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val networkInfo = connectivityManager!!.activeNetworkInfo
+        val isNetworkEnabled = networkInfo != null && networkInfo.isConnected
+
+        if (!isGpsEnabled) {
+            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).apply {
+                startActivity(this)
+            }
+        } else if (!isNetworkEnabled) {
+            Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS).apply {
+                startActivity(this)
+            }
+        }
+        return hasLocationPermission() && isGpsEnabled && isNetworkEnabled
     }
 }

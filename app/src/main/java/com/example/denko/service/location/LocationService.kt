@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 
 class LocationService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private lateinit var locationClient: LocationClient
+    private lateinit var locationClient: LocationClient //TODO("Inject this")
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -28,7 +28,6 @@ class LocationService : Service() {
     override fun onCreate() {
         super.onCreate()
         locationClient = DefaultLocationClient(
-            applicationContext,
             LocationServices.getFusedLocationProviderClient(applicationContext)
         )
     }
@@ -54,6 +53,7 @@ class LocationService : Service() {
         locationClient.getLocationUpdated(LOCATION_UPDATE_ACCURACY)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
+                println("location: ${location.latitude}, ${location.longitude}")
                 val updatedNotification =
                     notification.setContentText(
                         "${location.latitude}, ${location.longitude}"
