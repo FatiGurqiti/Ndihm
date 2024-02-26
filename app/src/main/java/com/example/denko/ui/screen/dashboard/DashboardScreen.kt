@@ -30,8 +30,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.example.denko.R
+import com.example.denko.data.remote.firebase.RealtimeDataBaseHandler
 import com.example.denko.ui.composable.dialog.DialogWithButtons
 import com.example.denko.ui.navigation.NavigationItem
+import javax.inject.Inject
 import kotlin.reflect.KFunction1
 
 @Composable

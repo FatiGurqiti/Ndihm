@@ -6,6 +6,7 @@ import com.example.denko.common.Constants
 import com.example.denko.data.local.preferences.NdihdenPreferences
 import com.example.denko.data.local.repository.HelpActionRepositoryImpl
 import com.example.denko.data.local.repository.UserRepositoryImpl
+import com.example.denko.data.remote.firebase.RealtimeDataBaseHandler
 import com.example.denko.domain.repository.HelpActionRepository
 import com.example.denko.domain.repository.UserRepository
 import com.google.gson.Gson
@@ -38,4 +39,8 @@ object DataModule {
     @Provides
     fun providesHelpActionRepository(ndihdenPreferences: NdihdenPreferences): HelpActionRepository =
         HelpActionRepositoryImpl(ndihdenPreferences)
+
+    @Singleton
+    @Provides
+    fun providesRealtimeDataBaseHandler() : RealtimeDataBaseHandler = RealtimeDataBaseHandler()
 }

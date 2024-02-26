@@ -6,6 +6,8 @@ import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.provider.Settings
 import com.example.denko.common.hasLocationPermission
+import com.example.denko.data.remote.firebase.RealtimeDataBaseHandler
+import com.example.denko.domain.model.User
 import com.example.denko.domain.useCase.helpActionUseCase.HelpActionUseCases
 import com.example.denko.service.location.LocationService
 import com.example.denko.ui.screen.base.BaseViewModel
@@ -16,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val biometricHandler: BiometricHandler,
-    private val helpActionUseCases: HelpActionUseCases,
+    private val helpActionUseCases: HelpActionUseCases
 ) :
     BaseViewModel<DashboardState, DashboardEvent, DashboardEffect>() {
     override val initialState: DashboardState
@@ -73,6 +75,10 @@ class DashboardViewModel @Inject constructor(
                 helpActionActive = true,
             )
         }
+//        realtimeDataBaseHandler.writeNewUser(User("Fati", "Gurqiti", "044", listOf("123.23123")))
+        val realtimeDataBaseHandler = RealtimeDataBaseHandler()
+        realtimeDataBaseHandler.addNewValue()
+        return
         helpActionUseCases.setHelpActionUseCase(true)
         Intent(this, LocationService::class.java).apply {
             action = LocationService.ACTION_START
