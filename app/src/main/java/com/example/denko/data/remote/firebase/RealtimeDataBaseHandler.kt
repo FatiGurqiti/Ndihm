@@ -1,37 +1,50 @@
 package com.example.denko.data.remote.firebase
 
+import com.example.denko.domain.model.Location
+import com.example.denko.domain.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.ValueEventListener
-
-@IgnoreExtraProperties
-data class User1(val username: String? = null, val email: String? = null) {
-    // Null default values create a no-argument default constructor, which is needed
-    // for deserialization from a DataSnapshot.
-}
+import com.google.gson.Gson
 
 class RealtimeDataBaseHandler {
-    private var database: DatabaseReference = FirebaseDatabase.getInstance().getReference("users")
+    private val database = FirebaseDatabase.getInstance().reference
+    val gson = Gson()
 
-    fun addNewValue() {
-        val database = FirebaseDatabase.getInstance().reference
-        val message = User1("John", "Hello, world!")
-        database.child("messages").push().setValue(message)
+    fun addNewValue(user: User) {
+        val messagesReference = database.child("requestsTest")
 
-        val messagesReference = database.child("messages")
         messagesReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val messages = dataSnapshot.children.mapNotNull { it.getValue(User1::class.java) }
-                // Update the UI with the new list of messages.
-                println("hajde: $messages")
+                val userRefs = dataSnapshot.children.mapNotNull { it.ref }
+                val userRef = userRefs.find { it.ref.key == user.id }
+
+                if (userRef != null && !user.id.isNullOrBlank()) {
+                    updateLocation(user, userRef)
+                } else {
+                    pushRequest(user)
+                }
             }
+
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle errors here.
                 println("hajde: error: $databaseError")
             }
         })
+    }
+
+    fun pushRequest(user: User) {
+        val messageJson = gson.toJson(user)
+        user.id?.let {
+            database.child("requestsTest").child(it).setValue(messageJson)
+        }
+    }
+
+    fun updateLocation(user: User, currentUserRef: DatabaseReference) {
+        user.location.add(Location("hh33", "123123"))
+        val messageJson = gson.toJson(user)
+        currentUserRef.setValue(messageJson)
     }
 }

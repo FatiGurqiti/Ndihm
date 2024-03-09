@@ -82,7 +82,7 @@ fun InfoContent(
 
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     var numberFiledFocus by remember { mutableStateOf(false) }
 
     Card(
@@ -154,8 +154,8 @@ fun InfoContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .onFocusChanged { numberFiledFocus = it.isFocused },
-                    value = phone,
-                    onValueChange = { if (it.length <= 8) phone = it },
+                    value = phoneNumber,
+                    onValueChange = { if (it.length <= 8) phoneNumber = it },
                     maxLines = 1,
                     label = {
                         Text(text = stringResource(id = R.string.phone_number))
@@ -193,7 +193,7 @@ fun InfoContent(
             .height(60.dp),
             shape = RectangleShape,
             onClick = {
-                onFinish(User(name, surname, phone))
+                onFinish(User(name = name, surname = surname, phoneNumber = phoneNumber))
             }) {
             Text(text = stringResource(id = R.string.finish))
         }
