@@ -82,7 +82,6 @@ class DashboardViewModel @Inject constructor(
             realtimeDataBaseHandler.addNewValue(it)
         }
 
-        return
         helpActionUseCases.setHelpActionUseCase(true)
         Intent(this, LocationService::class.java).apply {
             action = LocationService.ACTION_START
