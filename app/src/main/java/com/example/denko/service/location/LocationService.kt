@@ -4,11 +4,15 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.denko.R
+import com.example.denko.data.remote.firebase.RealtimeDataBaseHandler
 import com.example.denko.domain.client.LocationClient
+import com.example.denko.domain.useCase.userUseCase.GetUserUseCase
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,10 +20,17 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LocationService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient //TODO("Inject this")
+
+    private val userLocations = arrayListOf<com.example.denko.domain.model.Location>()
+
+    @Inject
+    lateinit var getUserUseCase: GetUserUseCase
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -55,14 +66,31 @@ class LocationService : Service() {
             .onEach { location ->
                 println("location: ${location.latitude}, ${location.longitude}")
                 val updatedNotification =
-                    notification.setContentText(
-                        "${location.latitude}, ${location.longitude}"
-                    )
+                    notification.setContentText("${location.latitude}, ${location.longitude}")
+
+                updateData(location)
+
                 notificationManager.notify(1, updatedNotification.build())
             }
             .launchIn(serviceScope)
 
         startForeground(1, notification.build())
+    }
+
+    private fun updateData(location: Location) {
+        val realtimeDataBaseHandler = RealtimeDataBaseHandler()
+        getUserUseCase()?.let {
+
+            userLocations.add(
+                com.example.denko.domain.model.Location(
+                    location.longitude.toString(),
+                    location.latitude.toString()
+                )
+            )
+
+            it.location = userLocations
+            realtimeDataBaseHandler.addNewValue(it)
+        }
     }
 
     private fun stop() {

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "41661361921",
+    "firebase_url": "https://helpkos-39d38-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "helpkos-39d38",
+    "storage_bucket": "helpkos-39d38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41661361921:android:3523d4a9cc81648a993500",
+        "android_client_info": {
+          "package_name": "com.example.denko"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl1DEv3F0umayz9yUSSnQPITQjmJ2GC-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

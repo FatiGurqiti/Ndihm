@@ -8,5 +8,5 @@ data class User(
     val name: String,
     val surname: String,
     val phoneNumber: String,
-    val location: ArrayList<Location> = arrayListOf()
+    var location: ArrayList<Location> = arrayListOf()
 )

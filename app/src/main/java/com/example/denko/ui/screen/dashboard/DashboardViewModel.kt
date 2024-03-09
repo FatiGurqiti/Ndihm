@@ -77,11 +77,6 @@ class DashboardViewModel @Inject constructor(
             )
         }
 
-        val realtimeDataBaseHandler = RealtimeDataBaseHandler()
-        getUserUseCase()?.let {
-            realtimeDataBaseHandler.addNewValue(it)
-        }
-
         helpActionUseCases.setHelpActionUseCase(true)
         Intent(this, LocationService::class.java).apply {
             action = LocationService.ACTION_START
