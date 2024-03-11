@@ -89,6 +89,8 @@ class LocationService : Service() {
             )
 
             it.location = userLocations
+
+            println("location: ${it.location}")
             realtimeDataBaseHandler.addNewValue(it)
         }
     }
